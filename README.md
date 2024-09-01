@@ -2,7 +2,7 @@
 
 Golang wrapper for qBittorrent Web API (for versions above v4.1+).
 
-This wrapper is based on the methods described in [qBittorrent WebUI APIwiki](<https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)>)
+This wrapper is based on the methods described in [qBittorrent WebUI API wiki](<https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)>)
 
 ## Installation
 
@@ -69,7 +69,7 @@ func main() {
         Locale("en").
         SavePath("/home/user/Downloads")
 
-    err = client.SetApplicationPreferences(&params.Data)
+    err = client.SetApplicationPreferences(params.Data)
     if err != nil {
         panic(err)
     }

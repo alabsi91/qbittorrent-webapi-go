@@ -90,7 +90,7 @@ func (c *Client) GetApplicationPreferences() (results ApplicationPreferences, er
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
 */
-func (c *Client) SetApplicationPreferences(prefs *map[string]interface{}) (err error) {
+func (c *Client) SetApplicationPreferences(prefs map[string]interface{}) (err error) {
 	jsonPrefs, err := json.Marshal(prefs)
 	if err != nil {
 		return
