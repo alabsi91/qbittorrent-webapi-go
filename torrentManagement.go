@@ -547,8 +547,9 @@ func (c *Client) SetFilePriority(hash string, ids []int, priority FilePriority) 
 	form := url.Values{}
 	form.Add("hash", hash)
 	form.Add("id", strings.Join(strIDs, "|"))
-	form.Add("priority", string(priority))
+	form.Add("priority", strconv.Itoa(int(priority)))
 	formDataBytes := []byte(form.Encode())
+
 	_, err = c.postReq("/api/v2/torrents/filePrio", &formDataBytes)
 	return
 }
