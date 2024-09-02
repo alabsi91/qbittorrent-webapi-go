@@ -20,25 +20,25 @@ const (
 type TorrentState = string
 
 const (
-	StateError              TorrentState = "error"
-	StateMissingFiles       TorrentState = "missingFiles"
-	StateUploading          TorrentState = "uploading"
-	StatePausedUP           TorrentState = "pausedUP"
-	StateQueuedUP           TorrentState = "queuedUP"
-	StateStalledUP          TorrentState = "stalledUP"
-	StateCheckingUP         TorrentState = "checkingUP"
-	StateForcedUP           TorrentState = "forcedUP"
-	StateAllocating         TorrentState = "allocating"
-	StateDownloading        TorrentState = "downloading"
-	StateMetaDL             TorrentState = "metaDL"
-	StatePausedDL           TorrentState = "pausedDL"
-	StateQueuedDL           TorrentState = "queuedDL"
-	StateStalledDL          TorrentState = "stalledDL"
-	StateCheckingDL         TorrentState = "checkingDL"
-	StateForcedDL           TorrentState = "forcedDL"
-	StateCheckingResumeData TorrentState = "checkingResumeData"
-	StateMoving             TorrentState = "moving"
-	StateUnknown            TorrentState = "unknown"
+	TorrentStateError              TorrentState = "error"              // Some error occurred, applies to paused torrents
+	TorrentStateMissingFiles       TorrentState = "missingFiles"       // Torrent data files is missing
+	TorrentStateUploading          TorrentState = "uploading"          // Torrent is being seeded and data is being transferred
+	TorrentStatePausedUP           TorrentState = "pausedUP"           // Torrent is paused and has finished downloading
+	TorrentStateQueuedUP           TorrentState = "queuedUP"           // Queuing is enabled and torrent is queued for upload
+	TorrentStateStalledUP          TorrentState = "stalledUP"          // Torrent is being seeded, but no connection were made
+	TorrentStateCheckingUP         TorrentState = "checkingUP"         // Torrent has finished downloading and is being checked
+	TorrentStateForcedUP           TorrentState = "forcedUP"           // Torrent is forced to uploading and ignore queue limit
+	TorrentStateAllocating         TorrentState = "allocating"         // Torrent is allocating disk space for download
+	TorrentStateDownloading        TorrentState = "downloading"        // Torrent is being downloaded and data is being transferred
+	TorrentStateMetaDL             TorrentState = "metaDL"             // Torrent has just started downloading and is fetching metadata
+	TorrentStatePausedDL           TorrentState = "pausedDL"           // Torrent is paused and has NOT finished downloading
+	TorrentStateQueuedDL           TorrentState = "queuedDL"           // Queuing is enabled and torrent is queued for download
+	TorrentStateStalledDL          TorrentState = "stalledDL"          // Torrent is being downloaded, but no connection were made
+	TorrentStateCheckingDL         TorrentState = "checkingDL"         // Same as checkingUP, but torrent has NOT finished downloading
+	TorrentStateForcedDL           TorrentState = "forcedDL"           // Torrent is forced to downloading to ignore queue limit
+	TorrentStateCheckingResumeData TorrentState = "checkingResumeData" // Checking resume data on qBt startup
+	TorrentStateMoving             TorrentState = "moving"             // Torrent is moving to another location
+	TorrentStateUnknown            TorrentState = "unknown"            // Unknown status
 )
 
 type SchedulerDays int

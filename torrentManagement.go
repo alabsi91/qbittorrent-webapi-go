@@ -147,6 +147,8 @@ func (c *Client) GetTorrentWebSeeds(hash string) (results []TorrentSeed, err err
 }
 
 /*
+Get a list of the files of a torrent
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
@@ -312,7 +314,7 @@ func (c *Client) ReannounceTorrents(hashes []string) (err error) {
 }
 
 /*
-This method can add torrents from server local file or from URLs. http://, https://, magnet: and bc://bt/ links are supported.
+This method can add torrents from a local file or from URLs. http://, https://, magnet: and bc://bt/ links are supported.
 
 # Params
   - "formData" a map of key value pairs, where the key is the name of the form field and the value is the value of the form field
@@ -536,10 +538,15 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 409 At least one file id was not found
   - 403 Forbidden, if the client is not authorized
 */
-func (c *Client) SetFilePriority(hash string, ids []string, priority FilePriority) (err error) {
+func (c *Client) SetFilePriority(hash string, ids []int, priority FilePriority) (err error) {
+	strIDs := make([]string, len(ids))
+	for i, id := range ids {
+		strIDs[i] = strconv.Itoa(id)
+	}
+
 	form := url.Values{}
 	form.Add("hash", hash)
-	form.Add("ids", strings.Join(ids, "|"))
+	form.Add("id", strings.Join(strIDs, "|"))
 	form.Add("priority", string(priority))
 	formDataBytes := []byte(form.Encode())
 	_, err = c.postReq("/api/v2/torrents/filePrio", &formDataBytes)
@@ -683,6 +690,8 @@ func (c *Client) SetTorrentLocation(hashes []string, location string) (err error
 }
 
 /*
+Changes the name of the torrent (Not the folder name)
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
@@ -742,6 +751,8 @@ func (c *Client) GetAllCategories() (results map[string]Category, err error) {
 }
 
 /*
+Adds a new category to the client
+
 # Params
   - "name" The name of the new category
   - "savePath" The path of the new category
@@ -761,6 +772,8 @@ func (c *Client) AddNewCategory(name, savePath string) (err error) {
 }
 
 /*
+Edits an existing category in the client
+
 # Params
   - "name" The name of the category to edit
   - "savePath" The new path of the category
@@ -780,6 +793,8 @@ func (c *Client) EditCategory(name, savePath string) (err error) {
 }
 
 /*
+Removes categories from the client
+
 # Params
   - "categories" The names of the categories to remove
 
@@ -795,6 +810,8 @@ func (c *Client) RemoveCategories(categories []string) (err error) {
 }
 
 /*
+Adds tags to torrents
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
@@ -814,6 +831,8 @@ func (c *Client) AddTorrentTags(hashes, tags []string) (err error) {
 }
 
 /*
+Removes tags from torrents
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
@@ -849,6 +868,8 @@ func (c *Client) GetAllTags() (results []string, err error) {
 }
 
 /*
+Creates new tags in the client
+
 # Params
   - "tags" The tags to create
 
@@ -864,6 +885,8 @@ func (c *Client) CreateTags(tags []string) (err error) {
 }
 
 /*
+Deletes tags from the client
+
 # Params
   - "tags" The tags to delete
 
@@ -879,6 +902,8 @@ func (c *Client) DeleteTags(tags []string) (err error) {
 }
 
 /*
+Enable/disable auto-management for a list of torrents
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
@@ -993,6 +1018,8 @@ func (c *Client) RenameFile(hash, oldPath, newPath string) (err error) {
 }
 
 /*
+Renames the folder of a torrent (where its stored)
+
 Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
