@@ -13,6 +13,8 @@ import (
 # Http Error Codes
   - 409 Failure to add folder
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-folder
 */
 func (c *Client) AddRSSFolder(path string) (err error) {
 	form := url.Values{}
@@ -30,6 +32,8 @@ func (c *Client) AddRSSFolder(path string) (err error) {
 # Http Error Codes
   - 409 Failure to add feed
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-feed
 */
 func (c *Client) AddRSSFeed(feedUrl, path string) (err error) {
 	form := url.Values{}
@@ -47,6 +51,8 @@ func (c *Client) AddRSSFeed(feedUrl, path string) (err error) {
 # Http Error Codes
   - 409 Failure to remove item
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-item
 */
 func (c *Client) RemoveRSSItem(path string) (err error) {
 	form := url.Values{}
@@ -64,6 +70,8 @@ func (c *Client) RemoveRSSItem(path string) (err error) {
 # Http Error Codes
   - 409 Failure to move item
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#move-item
 */
 func (c *Client) MoveRSSItem(itemPath, destPath string) (err error) {
 	form := url.Values{}
@@ -80,6 +88,8 @@ func (c *Client) MoveRSSItem(itemPath, destPath string) (err error) {
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-items
 */
 func (c *Client) GetAllRSSItems(withData bool) (results map[string]interface{}, err error) {
 	form := url.Values{}
@@ -102,6 +112,8 @@ func (c *Client) GetAllRSSItems(withData bool) (results map[string]interface{}, 
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#mark-as-read
 */
 func (c *Client) MarkRSSAsRead(itemPath, articleId string) (err error) {
 	form := url.Values{}
@@ -118,6 +130,8 @@ func (c *Client) MarkRSSAsRead(itemPath, articleId string) (err error) {
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#refresh-item
 */
 func (c *Client) RefreshRSSItem(itemPath string) (err error) {
 	form := url.Values{}
@@ -134,6 +148,8 @@ func (c *Client) RefreshRSSItem(itemPath string) (err error) {
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-auto-downloading-rule
 */
 func (c *Client) SetRSSAutoDownloadingRule(ruleName string, ruleDef map[string]interface{}) (err error) {
 	ruleDefStr, err := json.Marshal(ruleDef)
@@ -158,6 +174,8 @@ func (c *Client) SetRSSAutoDownloadingRule(ruleName string, ruleDef map[string]i
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-auto-downloading-rule
 */
 func (c *Client) RenameRSSAutoDownloadingRule(ruleName, newRuleName string) (err error) {
 	form := url.Values{}
@@ -174,6 +192,8 @@ func (c *Client) RenameRSSAutoDownloadingRule(ruleName, newRuleName string) (err
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-auto-downloading-rule
 */
 func (c *Client) RemoveRSSAutoDownloadingRule(ruleName string) (err error) {
 	form := url.Values{}
@@ -188,6 +208,8 @@ Returns all auto-downloading rules
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-auto-downloading-rules
 */
 func (c *Client) GetAllRSSDownloadingRules() (results map[string]RSSDownloadingRule, err error) {
 	body, err := c.getReq("/api/v2/rss/rules", nil)
@@ -206,6 +228,8 @@ Returns all articles that match a rule by feed name
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-articles-matching-a-rule
 */
 func (c *Client) GetAllRSSArticlesMatchingRule(ruleName string) (results map[string][]string, err error) {
 	form := url.Values{}

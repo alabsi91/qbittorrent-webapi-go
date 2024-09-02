@@ -7,8 +7,17 @@ import (
 )
 
 /*
+# Params [GetLogParams] struct
+  - "Normal" Include normal messages (default: true)
+  - "Info" Include info messages (default: true)
+  - "Warning" Include warning messages (default: true)
+  - "Critical" Include critical messages (default: true)
+  - "LastKnownId" integer Exclude messages with "message id" <= last_known_id (default: -1)
+
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-log
 */
 func (c *Client) GetLog(params *GetLogParams) (results []GetLogResponse, err error) {
 
@@ -59,6 +68,8 @@ func (c *Client) GetLog(params *GetLogParams) (results []GetLogResponse, err err
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-peer-log
 */
 func (c *Client) GetPeerLog(lastKnownId int) (results []GetPeerLogResponse, err error) {
 

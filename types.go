@@ -44,72 +44,72 @@ const (
 type SchedulerDays int
 
 const (
-	SchedulerEveryDay       SchedulerDays = 0
-	SchedulerEveryWeekday   SchedulerDays = 1
-	SchedulerEveryWeekend   SchedulerDays = 2
-	SchedulerEveryMonday    SchedulerDays = 3
-	SchedulerEveryTuesday   SchedulerDays = 4
-	SchedulerEveryWednesday SchedulerDays = 5
-	SchedulerEveryThursday  SchedulerDays = 6
-	SchedulerEveryFriday    SchedulerDays = 7
-	SchedulerEverySaturday  SchedulerDays = 8
-	SchedulerEverySunday    SchedulerDays = 9
+	SchedulerEveryDay       SchedulerDays = 0 // Every day
+	SchedulerEveryWeekday   SchedulerDays = 1 // Every weekday
+	SchedulerEveryWeekend   SchedulerDays = 2 // Every weekend
+	SchedulerEveryMonday    SchedulerDays = 3 // Every Monday
+	SchedulerEveryTuesday   SchedulerDays = 4 // Every Tuesday
+	SchedulerEveryWednesday SchedulerDays = 5 // Every Wednesday
+	SchedulerEveryThursday  SchedulerDays = 6 // Every Thursday
+	SchedulerEveryFriday    SchedulerDays = 7 // Every Friday
+	SchedulerEverySaturday  SchedulerDays = 8 // Every Saturday
+	SchedulerEverySunday    SchedulerDays = 9 // Every Sunday
 )
 
 type Encryption int
 
 const (
-	EncryptionPrefer   Encryption = 0
-	EncryptionForceOn  Encryption = 1
-	EncryptionForceOff Encryption = 2
+	EncryptionPrefer   Encryption = 0 // Prefer encryption
+	EncryptionForceOn  Encryption = 1 // Force encryption
+	EncryptionForceOff Encryption = 2 // Force no encryption
 )
 
 type ProxyType int
 
 const (
-	ProxyIsDisabled                  ProxyType = -1
-	ProxyHTTPWithoutAuthentication   ProxyType = 1
-	ProxySOCKS5WithoutAuthentication ProxyType = 2
-	ProxyHTTPWithAuthentication      ProxyType = 3
-	ProxySOCKS5WithAuthentication    ProxyType = 4
-	ProxySOCKS4WithoutAuthentication ProxyType = 5
+	ProxyIsDisabled                  ProxyType = -1 // Proxy is disabled
+	ProxyHTTPWithoutAuthentication   ProxyType = 1  // HTTP proxy without authentication
+	ProxySOCKS5WithoutAuthentication ProxyType = 2  // SOCKS5 proxy without authentication
+	ProxyHTTPWithAuthentication      ProxyType = 3  // HTTP proxy with authentication
+	ProxySOCKS5WithAuthentication    ProxyType = 4  // SOCKS5 proxy with authentication
+	ProxySOCKS4WithoutAuthentication ProxyType = 5  // SOCKS4 proxy without authentication
 )
 
 type DyndnsService int
 
 const (
-	DyndnsServiceUseDyDNS DyndnsService = 0
-	DyndnsServiceUseNOIP  DyndnsService = 1
+	DyndnsServiceUseDyDNS DyndnsService = 0 // Use DyDNS
+	DyndnsServiceUseNOIP  DyndnsService = 1 // Use NOIP
 )
 
 type MaxRatioAct int
 
 const (
-	MaxRatioActPause  MaxRatioAct = 0
-	MaxRatioActRemove MaxRatioAct = 1
+	MaxRatioActPause  MaxRatioAct = 0 // Pause torrent
+	MaxRatioActRemove MaxRatioAct = 1 // Remove torrent
 )
 
 type BittorrentProtocol int
 
 const (
-	BittorrentProtocolBoth BittorrentProtocol = 0
-	BittorrentProtocolTCP  BittorrentProtocol = 1
-	BittorrentProtocolUTP  BittorrentProtocol = 2
+	BittorrentProtocolBoth BittorrentProtocol = 0 // TCP and μTP
+	BittorrentProtocolTCP  BittorrentProtocol = 1 // Only TCP
+	BittorrentProtocolUTP  BittorrentProtocol = 2 // Only μTP
 )
 
 type UploadChokingAlgorithm int
 
 const (
-	UploadChokingAlgorithmRoundRobin    UploadChokingAlgorithm = 0
-	UploadChokingAlgorithmFastestUpload UploadChokingAlgorithm = 1
-	UploadChokingAlgorithmAntiLeech     UploadChokingAlgorithm = 2
+	UploadChokingAlgorithmRoundRobin    UploadChokingAlgorithm = 0 // Round-robin
+	UploadChokingAlgorithmFastestUpload UploadChokingAlgorithm = 1 // Fastest upload
+	UploadChokingAlgorithmAntiLeech     UploadChokingAlgorithm = 2 // Anti-leech
 )
 
 type UploadSlotsBehavior int
 
 const (
-	UploadSlotsBehaviorFixedSlots      UploadSlotsBehavior = 0
-	UploadSlotsBehaviorUploadRateBased UploadSlotsBehavior = 1
+	UploadSlotsBehaviorFixedSlots      UploadSlotsBehavior = 0 // Fixed slots
+	UploadSlotsBehaviorUploadRateBased UploadSlotsBehavior = 1 // Peer proportional
 )
 
 type UtpTcpMixedMode int
@@ -139,9 +139,9 @@ const (
 type ConnectionStatus string
 
 const (
-	Connected    ConnectionStatus = "connected"
-	FireWalled   ConnectionStatus = "firewalled"
-	Disconnected ConnectionStatus = "disconnected"
+	Connected    ConnectionStatus = "connected"    // Connected to the torrent
+	FireWalled   ConnectionStatus = "firewalled"   // firewalled
+	Disconnected ConnectionStatus = "disconnected" // Disconnected
 )
 
 type AlternativeSpeedLimitsStatus int
@@ -406,7 +406,7 @@ type GetLogParams struct {
 	Info        *bool // Include info messages (default: true)
 	Warning     *bool // Include warning messages (default: true)
 	Critical    *bool // Include critical messages (default: true)
-	LastKnownId *int  // integer	Exclude messages with "message id" <= last_known_id (default: -1)
+	LastKnownId *int  // integer Exclude messages with "message id" <= last_known_id (default: -1)
 }
 
 type GetLogResponse struct {

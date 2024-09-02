@@ -7,6 +7,16 @@ import (
 	"net/url"
 )
 
+/*
+# Params
+  - "username" Username used to access the WebUI
+  - "password" Password used to access the WebUI
+
+# Http Error Codes
+  - 403 User's IP is banned for too many failed login attempts
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#login
+*/
 func (c *Client) Login(username, password string) (err error) {
 	query, err := url.JoinPath(c.ServerURL, "/api/v2/auth/login")
 	if err != nil {
@@ -48,6 +58,9 @@ func (c *Client) Login(username, password string) (err error) {
 	return
 }
 
+/*
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#logout
+*/
 func (c *Client) Logout() (err error) {
 	_, err = c.postReq("/api/v2/auth/logout", nil)
 	if err != nil {

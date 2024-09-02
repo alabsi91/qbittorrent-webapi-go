@@ -11,6 +11,8 @@ This method returns info you usually see in qBt status bar.
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-global-transfer-info
 */
 func (c *Client) GetGlobalTransferInfo() (results TransferInfoResponse, err error) {
 	body, err := c.getReq("/api/v2/transfer/info", nil)
@@ -27,6 +29,8 @@ func (c *Client) GetGlobalTransferInfo() (results TransferInfoResponse, err erro
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-alternative-speed-limits-state
 */
 func (c *Client) GetAlternativeSpeedLimitsState() (results AlternativeSpeedLimitsStatus, err error) {
 	body, err := c.getReq("/api/v2/transfer/speedLimitsMode", nil)
@@ -40,6 +44,8 @@ func (c *Client) GetAlternativeSpeedLimitsState() (results AlternativeSpeedLimit
 /*
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#toggle-alternative-speed-limits
 */
 func (c *Client) ToggleAlternativeSpeedLimits() (err error) {
 	_, err = c.postReq("/api/v2/transfer/toggleSpeedLimitsMode", nil)
@@ -55,6 +61,8 @@ func (c *Client) ToggleAlternativeSpeedLimits() (err error) {
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-global-download-limit
 */
 func (c *Client) GetGlobalDownloadLimit() (results int, err error) {
 	body, err := c.getReq("/api/v2/transfer/downloadLimit", nil)
@@ -71,6 +79,8 @@ func (c *Client) GetGlobalDownloadLimit() (results int, err error) {
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-download-limit
 */
 func (c *Client) SetGlobalDownloadLimit(limit int) (err error) {
 	data := []byte(fmt.Sprintf("limit=%d", limit))
@@ -84,6 +94,8 @@ func (c *Client) SetGlobalDownloadLimit(limit int) (err error) {
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-global-upload-limit
 */
 func (c *Client) GetGlobalUploadLimit() (results int, err error) {
 	body, err := c.getReq("/api/v2/transfer/uploadLimit", nil)
@@ -100,6 +112,8 @@ func (c *Client) GetGlobalUploadLimit() (results int, err error) {
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-upload-limit
 */
 func (c *Client) SetGlobalUploadLimit(limit int) (err error) {
 	data := []byte(fmt.Sprintf("limit=%d", limit))
@@ -113,6 +127,8 @@ func (c *Client) SetGlobalUploadLimit(limit int) (err error) {
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#ban-peers
 */
 func (c *Client) BanPeers(peers []string) (err error) {
 	data := []byte(fmt.Sprintf("peers=%s", strings.Join(peers, "|")))

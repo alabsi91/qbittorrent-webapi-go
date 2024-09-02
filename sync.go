@@ -12,6 +12,8 @@ import (
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-main-data
 */
 func (c *Client) GetSyncMainData(rid int) (results SyncMainDataResponse, err error) {
 
@@ -38,6 +40,8 @@ func (c *Client) GetSyncMainData(rid int) (results SyncMainDataResponse, err err
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-peers-data
 */
 func (c *Client) GetSyncTorrentPeersData(hash string, rid int) (results map[string]interface{}, err error) {
 

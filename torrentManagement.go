@@ -18,6 +18,8 @@ GetTorrentList - get list of torrents in the client
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-list
 */
 func (c *Client) GetTorrentList(opts *GetTorrentListOptions) (results []TorrentListResponse, err error) {
 	if opts == nil {
@@ -75,6 +77,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # NB
   - `-1` is returned if the type of the property is integer but its value is not known.
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-generic-properties
 */
 func (c *Client) GetTorrentGenericProperties(hash string) (results TorrentGenericProperties, err error) {
 	queryParams := url.Values{}
@@ -102,6 +106,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-trackers
 */
 func (c *Client) GetTorrentTrackers(hash string) (results []TorrentTracker, err error) {
 	queryParams := url.Values{}
@@ -129,6 +135,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-web-seeds
 */
 func (c *Client) GetTorrentWebSeeds(hash string) (results []TorrentSeed, err error) {
 	queryParams := url.Values{}
@@ -158,6 +166,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-contents
 */
 func (c *Client) GetTorrentContents(hash string, indexes ...int) (results []TorrentFile, err error) {
 	queryParams := url.Values{}
@@ -192,6 +202,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-pieces-states
 */
 func (c *Client) GetTorrentPiecesStates(hash string) (results []TorrentPiecesState, err error) {
 	queryParams := url.Values{}
@@ -219,6 +231,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-pieces-hashes
 */
 func (c *Client) GetTorrentPiecesHashes(hash string) (results []string, err error) {
 	queryParams := url.Values{}
@@ -245,6 +259,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#pause-torrents
 */
 func (c *Client) PauseTorrents(hashes []string) (err error) {
 	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
@@ -260,6 +276,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#resume-torrents
 */
 func (c *Client) ResumeTorrents(hashes []string) (err error) {
 	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
@@ -276,6 +294,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-torrents
 */
 func (c *Client) DeleteTorrents(hashes []string, deleteFiles bool) (err error) {
 	data := []byte(fmt.Sprintf("hashes=%s&deleteFiles=%t", strings.Join(hashes, "|"), deleteFiles))
@@ -291,6 +311,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#recheck-torrents
 */
 func (c *Client) RecheckTorrents(hashes []string) (err error) {
 	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
@@ -306,6 +328,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#reannounce-torrents
 */
 func (c *Client) ReannounceTorrents(hashes []string) (err error) {
 	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
@@ -319,12 +343,26 @@ This method can add torrents from a local file or from URLs. http://, https://, 
 # Params
   - "formData" a map of key value pairs, where the key is the name of the form field and the value is the value of the form field
 
-# Tip
-  - Use [NewTorrent] to build the form then pass its `data` field
+# Example
+
+	torrent := qbittorrent.NewTorrent().
+		AddUrl("URL: http://, https://, magnet: and bc://bt/ links are supported").
+		AddUrl("Additional URL").
+		AddFromFile("pathToTorrentFile.torrent").
+		AddFromFile("AdditionalPathToTorrentFile.torrent").
+		Category("Movies").
+		AutoTMM(true)
+
+	err = client.AddNewTorrent(torrent.Data)
+	if err != nil {
+		panic(err)
+	}
 
 # Http Error Codes
   - 415 Torrent file is not valid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-new-torrent
 */
 func (c *Client) AddNewTorrent(formData map[string]string) (err error) {
 	// add torrent from files and urls
@@ -374,6 +412,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 404 Not Found, if the torrent hash is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-trackers-to-torrent
 */
 func (c *Client) AddTrackersToTorrent(hash string, trackers []string) (err error) {
 	form := url.Values{}
@@ -398,6 +438,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 409 newUrl already exists for the torrent
   - 409 origUrl was not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-trackers
 */
 func (c *Client) EditTrackers(hash, origUrl, newUrl string) (err error) {
 	form := url.Values{}
@@ -420,6 +462,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 404 Torrent hash was not found
   - 409 All urls were not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-trackers
 */
 func (c *Client) RemoveTrackers(hash string, urls []string) (err error) {
 	form := url.Values{}
@@ -440,6 +484,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 400 None of the supplied peers are valid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-peers
 */
 func (c *Client) AddPeers(hashes, peers []string) (err error) {
 	form := url.Values{}
@@ -459,6 +505,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 409 Torrent queueing is not enabled
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#increase-torrent-priority
 */
 func (c *Client) IncreaseTorrentPriority(hashes []string) (err error) {
 	form := url.Values{}
@@ -477,6 +525,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 409 Torrent queueing is not enabled
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#decrease-torrent-priority
 */
 func (c *Client) DecreaseTorrentPriority(hashes []string) (err error) {
 	form := url.Values{}
@@ -495,6 +545,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 409 Torrent queueing is not enabled
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#maximal-torrent-priority
 */
 func (c *Client) MaximalTorrentPriority(hashes []string) (err error) {
 	form := url.Values{}
@@ -513,6 +565,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 409 Torrent queueing is not enabled
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#minimal-torrent-priority
 */
 func (c *Client) MinimalTorrentPriority(hashes []string) (err error) {
 	form := url.Values{}
@@ -537,6 +591,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 409 Torrent metadata hasn't downloaded yet
   - 409 At least one file id was not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-file-priority
 */
 func (c *Client) SetFilePriority(hash string, ids []int, priority FilePriority) (err error) {
 	strIDs := make([]string, len(ids))
@@ -565,6 +621,8 @@ Returns:
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-download-limit
 */
 func (c *Client) GetTorrentDownloadLimit(hashes []string) (results map[string]int, err error) {
 	params := url.Values{}
@@ -589,6 +647,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes:
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-download-limit
 */
 func (c *Client) SetTorrentDownloadLimit(hashes []string, limit int) (err error) {
 	form := url.Values{}
@@ -611,6 +671,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes:
   - 400 Bad Request
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-share-limit
 */
 func (c *Client) SetTorrentShareLimit(hashes []string, ratioLimit float64, seedingTimeLimit, inactiveSeedingTimeLimit int) (err error) {
 	form := url.Values{}
@@ -634,6 +696,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-torrent-upload-limit
 */
 func (c *Client) GetTorrentUploadLimit(hashes []string) (results map[string]int, err error) {
 	params := url.Values{}
@@ -658,6 +722,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-upload-limit
 */
 func (c *Client) SetTorrentUploadLimit(hashes []string, limit int) (err error) {
 	form := url.Values{}
@@ -680,6 +746,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 403 User does not have write access to directory
   - 409 Unable to create save path directory
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-location
 */
 func (c *Client) SetTorrentLocation(hashes []string, location string) (err error) {
 	form := url.Values{}
@@ -703,6 +771,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
   - 404 Torrent hash is invalid
   - 409 Torrent name is empty
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-name
 */
 func (c *Client) SetTorrentName(hash, name string) (err error) {
 	form := url.Values{}
@@ -723,6 +793,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 # Http Error Codes
   - 409 Category name does not exist
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-category
 */
 func (c *Client) SetTorrentCategory(hashes []string, category string) (err error) {
 	form := url.Values{}
@@ -740,6 +812,8 @@ Returns all categories in the client
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-categories
 */
 func (c *Client) GetAllCategories() (results map[string]Category, err error) {
 	body, err := c.getReq("/api/v2/torrents/categories", nil)
@@ -762,6 +836,8 @@ Adds a new category to the client
   - 400 Category name is empty
   - 409 Category name is invalid
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-new-category
 */
 func (c *Client) AddNewCategory(name, savePath string) (err error) {
 	form := url.Values{}
@@ -783,6 +859,8 @@ Edits an existing category in the client
   - 400 Category name is empty
   - 409 Category editing failed
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-category
 */
 func (c *Client) EditCategory(name, savePath string) (err error) {
 	form := url.Values{}
@@ -801,6 +879,8 @@ Removes categories from the client
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-categories
 */
 func (c *Client) RemoveCategories(categories []string) (err error) {
 	form := url.Values{}
@@ -821,6 +901,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-torrent-tags
 */
 func (c *Client) AddTorrentTags(hashes, tags []string) (err error) {
 	form := url.Values{}
@@ -842,6 +924,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-torrent-tags
 */
 func (c *Client) RemoveTorrentTags(hashes, tags []string) (err error) {
 	form := url.Values{}
@@ -857,6 +941,8 @@ Returns all tags
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-all-tags
 */
 func (c *Client) GetAllTags() (results []string, err error) {
 	body, err := c.getReq("/api/v2/torrents/tags", nil)
@@ -876,6 +962,8 @@ Creates new tags in the client
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#create-tags
 */
 func (c *Client) CreateTags(tags []string) (err error) {
 	form := url.Values{}
@@ -893,6 +981,8 @@ Deletes tags from the client
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-tags
 */
 func (c *Client) DeleteTags(tags []string) (err error) {
 	form := url.Values{}
@@ -913,6 +1003,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-automatic-torrent-management
 */
 func (c *Client) SetAutomaticTorrentManagement(hashes []string, enable bool) (err error) {
 	form := url.Values{}
@@ -931,6 +1023,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#toggle-sequential-download
 */
 func (c *Client) ToggleSequentialDownload(hashes []string) (err error) {
 	form := url.Values{}
@@ -948,6 +1042,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-firstlast-piece-priority
 */
 func (c *Client) ToggleFirstLastPiecePriority(hashes []string) (err error) {
 	form := url.Values{}
@@ -966,6 +1062,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-force-start
 */
 func (c *Client) SetForceStart(hashes []string, enable bool) (err error) {
 	form := url.Values{}
@@ -985,6 +1083,8 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-super-seeding
 */
 func (c *Client) SetSuperSeeding(hashes []string, enable bool) (err error) {
 	form := url.Values{}
@@ -1000,13 +1100,15 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
   - "hash" The hash of the torrent
-  - "oldPath" The old path
-  - "newPath" The new path
+  - "oldPath" (relative to the torrent) The old path
+  - "newPath" (relative to the torrent) The new path
 
 # Http Error Codes
   - 400 Missing newPath parameter
   - 409 Invalid newPath or oldPath, or newPath already in use
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-file
 */
 func (c *Client) RenameFile(hash, oldPath, newPath string) (err error) {
 	form := url.Values{}
@@ -1025,13 +1127,15 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 
 # Params
   - "hash" The hash of the torrent
-  - "oldPath" The old path
-  - "newPath" The new path
+  - "oldPath" (relative to the torrent) The old path
+  - "newPath" (relative to the torrent) The new path
 
 # Http Error Codes
   - 400 Missing newPath parameter
   - 409 Invalid newPath or oldPath, or newPath already in use
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-folder
 */
 func (c *Client) RenameFolder(hash, oldPath, newPath string) (err error) {
 	form := url.Values{}

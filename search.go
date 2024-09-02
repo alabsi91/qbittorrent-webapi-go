@@ -19,6 +19,8 @@ import (
 # Http Error Codes
   - 409 User has reached the limit of max Running searches (currently set to 5)
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#start-search
 */
 func (c *Client) StartSearch(pattern string, plugins []string, category []string) (results int, err error) {
 	form := url.Values{}
@@ -50,6 +52,8 @@ func (c *Client) StartSearch(pattern string, plugins []string, category []string
 # Http Error Codes
   - 404 Forbidden, Search job was not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#stop-search
 */
 func (c *Client) StopSearch(id int) (err error) {
 	form := url.Values{}
@@ -66,6 +70,8 @@ func (c *Client) StopSearch(id int) (err error) {
 # Http Error Codes
   - 404 Search job was not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-status
 */
 func (c *Client) GetSearchStatus(id *int) (results []SearchStatusResponse, err error) {
 	form := url.Values{}
@@ -92,6 +98,8 @@ func (c *Client) GetSearchStatus(id *int) (results []SearchStatusResponse, err e
   - 404 Search job was not found
   - 409 Offset is too large, or too small (e.g. absolute value of negative number is greater than # results)
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-results
 */
 func (c *Client) GetSearchResults(id int, limit, offset *int) (results SearchResultsResponse, err error) {
 	form := url.Values{}
@@ -119,6 +127,8 @@ func (c *Client) GetSearchResults(id int, limit, offset *int) (results SearchRes
 # Http Error Codes
   - 404 Search job was not found
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-search
 */
 func (c *Client) DeleteSearch(id int) (err error) {
 	form := url.Values{}
@@ -131,6 +141,8 @@ func (c *Client) DeleteSearch(id int) (err error) {
 /*
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-plugins
 */
 func (c *Client) GetSearchPlugins() (results []SearchPluginsResponse, err error) {
 	body, err := c.getReq("/api/v2/search/plugins", nil)
@@ -148,6 +160,8 @@ func (c *Client) GetSearchPlugins() (results []SearchPluginsResponse, err error)
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#install-search-plugin
 */
 func (c *Client) InstallSearchPlugin(sources []string) (err error) {
 	form := url.Values{}
@@ -163,6 +177,8 @@ func (c *Client) InstallSearchPlugin(sources []string) (err error) {
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#uninstall-search-plugin
 */
 func (c *Client) UninstallSearchPlugin(names []string) (err error) {
 	form := url.Values{}
@@ -179,6 +195,8 @@ func (c *Client) UninstallSearchPlugin(names []string) (err error) {
 
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#enable-search-plugin
 */
 func (c *Client) EnableSearchPlugin(names []string, enable bool) (err error) {
 	form := url.Values{}
@@ -192,6 +210,8 @@ func (c *Client) EnableSearchPlugin(names []string, enable bool) (err error) {
 /*
 # Http Error Codes
   - 403 Forbidden, if the client is not authorized
+
+https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#update-search-plugins
 */
 func (c *Client) UpdateSearchPlugins() (err error) {
 	_, err = c.postReq("/api/v2/search/updatePlugins", nil)
