@@ -841,7 +841,7 @@ https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-
 */
 func (c *Client) AddNewCategory(name, savePath string) (err error) {
 	form := url.Values{}
-	form.Add("name", name)
+	form.Add("category", name)
 	form.Add("savePath", savePath)
 	formDataBytes := []byte(form.Encode())
 	_, err = c.postReq("/api/v2/torrents/createCategory", &formDataBytes)
@@ -864,7 +864,7 @@ https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit
 */
 func (c *Client) EditCategory(name, savePath string) (err error) {
 	form := url.Values{}
-	form.Add("name", name)
+	form.Add("category", name)
 	form.Add("savePath", savePath)
 	formDataBytes := []byte(form.Encode())
 	_, err = c.postReq("/api/v2/torrents/editCategory", &formDataBytes)
