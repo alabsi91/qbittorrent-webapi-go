@@ -2,7 +2,7 @@ package qbittorrent
 
 import (
 	"encoding/json"
-	"fmt"
+	"net/url"
 )
 
 /*
@@ -121,9 +121,10 @@ func (c *Client) SetApplicationPreferences(prefs map[string]interface{}) (err er
 		return
 	}
 
-	data := []byte(fmt.Sprintf("json=%s", jsonPrefs))
+	params := url.Values{}
+	params.Add("json", string(jsonPrefs))
 
-	_, err = c.postReq("/api/v2/app/setPreferences", &data)
+	_, err = c.postReq("/api/v2/app/setPreferences", &params)
 	if err != nil {
 		return
 	}

@@ -2,7 +2,8 @@ package qbittorrent
 
 import (
 	"encoding/json"
-	"fmt"
+	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -83,8 +84,9 @@ func (c *Client) GetGlobalDownloadLimit() (results int, err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-download-limit
 */
 func (c *Client) SetGlobalDownloadLimit(limit int) (err error) {
-	data := []byte(fmt.Sprintf("limit=%d", limit))
-	_, err = c.postReq("/api/v2/transfer/setDownloadLimit", &data)
+	params := url.Values{}
+	params.Add("limit", strconv.Itoa(limit))
+	_, err = c.postReq("/api/v2/transfer/setDownloadLimit", &params)
 	return
 }
 
@@ -116,8 +118,9 @@ func (c *Client) GetGlobalUploadLimit() (results int, err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-global-upload-limit
 */
 func (c *Client) SetGlobalUploadLimit(limit int) (err error) {
-	data := []byte(fmt.Sprintf("limit=%d", limit))
-	_, err = c.postReq("/api/v2/transfer/setUploadLimit", &data)
+	params := url.Values{}
+	params.Add("limit", strconv.Itoa(limit))
+	_, err = c.postReq("/api/v2/transfer/setUploadLimit", &params)
 	return
 }
 
@@ -131,7 +134,8 @@ func (c *Client) SetGlobalUploadLimit(limit int) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#ban-peers
 */
 func (c *Client) BanPeers(peers []string) (err error) {
-	data := []byte(fmt.Sprintf("peers=%s", strings.Join(peers, "|")))
-	_, err = c.postReq("/api/v2/transfer/banPeers", &data)
+	params := url.Values{}
+	params.Add("peers", strings.Join(peers, "|"))
+	_, err = c.postReq("/api/v2/transfer/banPeers", &params)
 	return
 }

@@ -17,10 +17,9 @@ import (
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-folder
 */
 func (c *Client) AddRSSFolder(path string) (err error) {
-	form := url.Values{}
-	form.Add("path", path)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/addFolder", &formDataBytes)
+	params := url.Values{}
+	params.Add("path", path)
+	_, err = c.postReq("/api/v2/rss/addFolder", &params)
 	return
 }
 
@@ -36,11 +35,10 @@ func (c *Client) AddRSSFolder(path string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-feed
 */
 func (c *Client) AddRSSFeed(feedUrl, path string) (err error) {
-	form := url.Values{}
-	form.Add("url", feedUrl)
-	form.Add("path", path)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/addFeed", &formDataBytes)
+	params := url.Values{}
+	params.Add("url", feedUrl)
+	params.Add("path", path)
+	_, err = c.postReq("/api/v2/rss/addFeed", &params)
 	return
 }
 
@@ -55,10 +53,9 @@ func (c *Client) AddRSSFeed(feedUrl, path string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-item
 */
 func (c *Client) RemoveRSSItem(path string) (err error) {
-	form := url.Values{}
-	form.Add("path", path)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/removeItem", &formDataBytes)
+	params := url.Values{}
+	params.Add("path", path)
+	_, err = c.postReq("/api/v2/rss/removeItem", &params)
 	return
 }
 
@@ -74,11 +71,10 @@ func (c *Client) RemoveRSSItem(path string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#move-item
 */
 func (c *Client) MoveRSSItem(itemPath, destPath string) (err error) {
-	form := url.Values{}
-	form.Add("itemPath", itemPath)
-	form.Add("destPath", destPath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/moveItem", &formDataBytes)
+	params := url.Values{}
+	params.Add("itemPath", itemPath)
+	params.Add("destPath", destPath)
+	_, err = c.postReq("/api/v2/rss/moveItem", &params)
 	return
 }
 
@@ -116,11 +112,10 @@ func (c *Client) GetAllRSSItems(withData bool) (results map[string]interface{}, 
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#mark-as-read
 */
 func (c *Client) MarkRSSAsRead(itemPath, articleId string) (err error) {
-	form := url.Values{}
-	form.Add("itemPath", itemPath)
-	form.Add("articleId", articleId)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/markAsRead", &formDataBytes)
+	params := url.Values{}
+	params.Add("itemPath", itemPath)
+	params.Add("articleId", articleId)
+	_, err = c.postReq("/api/v2/rss/markAsRead", &params)
 	return
 }
 
@@ -134,10 +129,9 @@ func (c *Client) MarkRSSAsRead(itemPath, articleId string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#refresh-item
 */
 func (c *Client) RefreshRSSItem(itemPath string) (err error) {
-	form := url.Values{}
-	form.Add("itemPath", itemPath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/refreshItem", &formDataBytes)
+	params := url.Values{}
+	params.Add("itemPath", itemPath)
+	_, err = c.postReq("/api/v2/rss/refreshItem", &params)
 	return
 }
 
@@ -157,12 +151,11 @@ func (c *Client) SetRSSAutoDownloadingRule(ruleName string, ruleDef map[string]i
 		return
 	}
 
-	form := url.Values{}
-	form.Add("ruleName", ruleName)
-	form.Add("ruleDef", string(ruleDefStr))
+	params := url.Values{}
+	params.Add("ruleName", ruleName)
+	params.Add("ruleDef", string(ruleDefStr))
 
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/setRule", &formDataBytes)
+	_, err = c.postReq("/api/v2/rss/setRule", &params)
 
 	return
 }
@@ -178,11 +171,10 @@ func (c *Client) SetRSSAutoDownloadingRule(ruleName string, ruleDef map[string]i
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-auto-downloading-rule
 */
 func (c *Client) RenameRSSAutoDownloadingRule(ruleName, newRuleName string) (err error) {
-	form := url.Values{}
-	form.Add("ruleName", ruleName)
-	form.Add("newRuleName", newRuleName)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/renameRule", &formDataBytes)
+	params := url.Values{}
+	params.Add("ruleName", ruleName)
+	params.Add("newRuleName", newRuleName)
+	_, err = c.postReq("/api/v2/rss/renameRule", &params)
 	return
 }
 
@@ -196,10 +188,9 @@ func (c *Client) RenameRSSAutoDownloadingRule(ruleName, newRuleName string) (err
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-auto-downloading-rule
 */
 func (c *Client) RemoveRSSAutoDownloadingRule(ruleName string) (err error) {
-	form := url.Values{}
-	form.Add("ruleName", ruleName)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/rss/removeRule", &formDataBytes)
+	params := url.Values{}
+	params.Add("ruleName", ruleName)
+	_, err = c.postReq("/api/v2/rss/removeRule", &params)
 	return
 }
 

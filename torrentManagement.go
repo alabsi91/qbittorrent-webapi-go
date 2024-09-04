@@ -3,7 +3,6 @@ package qbittorrent
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"mime/multipart"
 	"net/url"
 	"strconv"
@@ -263,8 +262,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#pause-torrents
 */
 func (c *Client) PauseTorrents(hashes []string) (err error) {
-	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
-	_, err = c.postReq("/api/v2/torrents/pause", &data)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/pause", &params)
 	return
 }
 
@@ -280,8 +280,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#resume-torrents
 */
 func (c *Client) ResumeTorrents(hashes []string) (err error) {
-	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
-	_, err = c.postReq("/api/v2/torrents/resume", &data)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/resume", &params)
 	return
 }
 
@@ -298,8 +299,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-torrents
 */
 func (c *Client) DeleteTorrents(hashes []string, deleteFiles bool) (err error) {
-	data := []byte(fmt.Sprintf("hashes=%s&deleteFiles=%t", strings.Join(hashes, "|"), deleteFiles))
-	_, err = c.postReq("/api/v2/torrents/delete", &data)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("deleteFiles", strconv.FormatBool(deleteFiles))
+	_, err = c.postReq("/api/v2/torrents/delete", &params)
 	return
 }
 
@@ -315,8 +318,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#recheck-torrents
 */
 func (c *Client) RecheckTorrents(hashes []string) (err error) {
-	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
-	_, err = c.postReq("/api/v2/torrents/recheck", &data)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/recheck", &params)
 	return
 }
 
@@ -332,8 +336,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#reannounce-torrents
 */
 func (c *Client) ReannounceTorrents(hashes []string) (err error) {
-	data := []byte(fmt.Sprintf("hashes=%s", strings.Join(hashes, "|")))
-	_, err = c.postReq("/api/v2/torrents/reannounce", &data)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/reannounce", &params)
 	return
 }
 
@@ -393,12 +398,12 @@ func (c *Client) AddNewTorrent(formData map[string]string) (err error) {
 	}
 
 	// add torrent from url only
-	form := url.Values{}
+	params := url.Values{}
 	for k, v := range formData {
-		form.Add(k, v)
+		params.Add(k, v)
 	}
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/add", &formDataBytes)
+
+	_, err = c.postReq("/api/v2/torrents/add", &params)
 	return
 }
 
@@ -416,11 +421,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-trackers-to-torrent
 */
 func (c *Client) AddTrackersToTorrent(hash string, trackers []string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("urls", strings.Join(trackers, "\n"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/addTrackers", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("urls", strings.Join(trackers, "\n"))
+	_, err = c.postReq("/api/v2/torrents/addTrackers", &params)
 	return
 }
 
@@ -442,12 +446,11 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-trackers
 */
 func (c *Client) EditTrackers(hash, origUrl, newUrl string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("origUrl", origUrl)
-	form.Add("newUrl", newUrl)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/editTracker", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("origUrl", origUrl)
+	params.Add("newUrl", newUrl)
+	_, err = c.postReq("/api/v2/torrents/editTracker", &params)
 	return
 }
 
@@ -466,11 +469,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-trackers
 */
 func (c *Client) RemoveTrackers(hash string, urls []string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("urls", strings.Join(urls, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/removeTrackers", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("urls", strings.Join(urls, "|"))
+	_, err = c.postReq("/api/v2/torrents/removeTrackers", &params)
 	return
 }
 
@@ -488,11 +490,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-peers
 */
 func (c *Client) AddPeers(hashes, peers []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("peers", strings.Join(peers, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/addPeers", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("peers", strings.Join(peers, "|"))
+	_, err = c.postReq("/api/v2/torrents/addPeers", &params)
 	return
 }
 
@@ -509,10 +510,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#increase-torrent-priority
 */
 func (c *Client) IncreaseTorrentPriority(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/increasePrio", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/increasePrio", &params)
 	return
 }
 
@@ -529,10 +529,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#decrease-torrent-priority
 */
 func (c *Client) DecreaseTorrentPriority(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/decreasePrio", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/decreasePrio", &params)
 	return
 }
 
@@ -549,10 +548,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#maximal-torrent-priority
 */
 func (c *Client) MaximalTorrentPriority(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/topPrio", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/topPrio", &params)
 	return
 }
 
@@ -569,10 +567,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#minimal-torrent-priority
 */
 func (c *Client) MinimalTorrentPriority(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/bottomPrio", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/bottomPrio", &params)
 	return
 }
 
@@ -600,13 +597,12 @@ func (c *Client) SetFilePriority(hash string, ids []int, priority FilePriority) 
 		strIDs[i] = strconv.Itoa(id)
 	}
 
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("id", strings.Join(strIDs, "|"))
-	form.Add("priority", strconv.Itoa(int(priority)))
-	formDataBytes := []byte(form.Encode())
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("id", strings.Join(strIDs, "|"))
+	params.Add("priority", strconv.Itoa(int(priority)))
 
-	_, err = c.postReq("/api/v2/torrents/filePrio", &formDataBytes)
+	_, err = c.postReq("/api/v2/torrents/filePrio", &params)
 	return
 }
 
@@ -651,11 +647,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-download-limit
 */
 func (c *Client) SetTorrentDownloadLimit(hashes []string, limit int) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("limit", strconv.Itoa(limit))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setDownloadLimit", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("limit", strconv.Itoa(limit))
+	_, err = c.postReq("/api/v2/torrents/setDownloadLimit", &params)
 	return
 }
 
@@ -675,13 +670,12 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-share-limit
 */
 func (c *Client) SetTorrentShareLimit(hashes []string, ratioLimit float64, seedingTimeLimit, inactiveSeedingTimeLimit int) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("ratioLimit", strconv.FormatFloat(ratioLimit, 'f', -1, 64))
-	form.Add("seedingTimeLimit", strconv.Itoa(seedingTimeLimit))
-	form.Add("inactiveSeedingTimeLimit", strconv.Itoa(inactiveSeedingTimeLimit))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setShareLimits", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("ratioLimit", strconv.FormatFloat(ratioLimit, 'f', -1, 64))
+	params.Add("seedingTimeLimit", strconv.Itoa(seedingTimeLimit))
+	params.Add("inactiveSeedingTimeLimit", strconv.Itoa(inactiveSeedingTimeLimit))
+	_, err = c.postReq("/api/v2/torrents/setShareLimits", &params)
 	return
 }
 
@@ -726,11 +720,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-upload-limit
 */
 func (c *Client) SetTorrentUploadLimit(hashes []string, limit int) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("limit", strconv.Itoa(limit))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setUploadLimit", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("limit", strconv.Itoa(limit))
+	_, err = c.postReq("/api/v2/torrents/setUploadLimit", &params)
 	return
 }
 
@@ -750,11 +743,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-location
 */
 func (c *Client) SetTorrentLocation(hashes []string, location string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("location", location)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setLocation", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("location", location)
+	_, err = c.postReq("/api/v2/torrents/setLocation", &params)
 	return
 }
 
@@ -775,11 +767,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-name
 */
 func (c *Client) SetTorrentName(hash, name string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("name", name)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/rename", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("name", name)
+	_, err = c.postReq("/api/v2/torrents/rename", &params)
 	return
 }
 
@@ -797,11 +788,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-torrent-category
 */
 func (c *Client) SetTorrentCategory(hashes []string, category string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("category", category)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setCategory", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("category", category)
+	_, err = c.postReq("/api/v2/torrents/setCategory", &params)
 	return
 }
 
@@ -840,11 +830,10 @@ Adds a new category to the client
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-new-category
 */
 func (c *Client) AddNewCategory(name, savePath string) (err error) {
-	form := url.Values{}
-	form.Add("category", name)
-	form.Add("savePath", savePath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/createCategory", &formDataBytes)
+	params := url.Values{}
+	params.Add("category", name)
+	params.Add("savePath", savePath)
+	_, err = c.postReq("/api/v2/torrents/createCategory", &params)
 	return
 }
 
@@ -863,11 +852,10 @@ Edits an existing category in the client
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#edit-category
 */
 func (c *Client) EditCategory(name, savePath string) (err error) {
-	form := url.Values{}
-	form.Add("category", name)
-	form.Add("savePath", savePath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/editCategory", &formDataBytes)
+	params := url.Values{}
+	params.Add("category", name)
+	params.Add("savePath", savePath)
+	_, err = c.postReq("/api/v2/torrents/editCategory", &params)
 	return
 }
 
@@ -883,10 +871,9 @@ Removes categories from the client
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-categories
 */
 func (c *Client) RemoveCategories(categories []string) (err error) {
-	form := url.Values{}
-	form.Add("categories", strings.Join(categories, "\n"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/removeCategories", &formDataBytes)
+	params := url.Values{}
+	params.Add("categories", strings.Join(categories, "\n"))
+	_, err = c.postReq("/api/v2/torrents/removeCategories", &params)
 	return
 }
 
@@ -905,11 +892,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#add-torrent-tags
 */
 func (c *Client) AddTorrentTags(hashes, tags []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("tags", strings.Join(tags, ","))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/addTags", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("tags", strings.Join(tags, ","))
+	_, err = c.postReq("/api/v2/torrents/addTags", &params)
 	return
 }
 
@@ -928,11 +914,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#remove-torrent-tags
 */
 func (c *Client) RemoveTorrentTags(hashes, tags []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("tags", strings.Join(tags, ","))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/removeTags", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("tags", strings.Join(tags, ","))
+	_, err = c.postReq("/api/v2/torrents/removeTags", &params)
 	return
 }
 
@@ -966,10 +951,9 @@ Creates new tags in the client
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#create-tags
 */
 func (c *Client) CreateTags(tags []string) (err error) {
-	form := url.Values{}
-	form.Add("tags", strings.Join(tags, ","))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/createTags", &formDataBytes)
+	params := url.Values{}
+	params.Add("tags", strings.Join(tags, ","))
+	_, err = c.postReq("/api/v2/torrents/createTags", &params)
 	return
 }
 
@@ -985,10 +969,9 @@ Deletes tags from the client
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-tags
 */
 func (c *Client) DeleteTags(tags []string) (err error) {
-	form := url.Values{}
-	form.Add("tags", strings.Join(tags, ","))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/deleteTags", &formDataBytes)
+	params := url.Values{}
+	params.Add("tags", strings.Join(tags, ","))
+	_, err = c.postReq("/api/v2/torrents/deleteTags", &params)
 	return
 }
 
@@ -1007,11 +990,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-automatic-torrent-management
 */
 func (c *Client) SetAutomaticTorrentManagement(hashes []string, enable bool) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("enable", strconv.FormatBool(enable))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setAutoManagement", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("enable", strconv.FormatBool(enable))
+	_, err = c.postReq("/api/v2/torrents/setAutoManagement", &params)
 	return
 }
 
@@ -1027,10 +1009,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#toggle-sequential-download
 */
 func (c *Client) ToggleSequentialDownload(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/toggleSequentialDownload", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/toggleSequentialDownload", &params)
 	return
 }
 
@@ -1046,10 +1027,9 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-firstlast-piece-priority
 */
 func (c *Client) ToggleFirstLastPiecePriority(hashes []string) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/toggleFirstLastPiecePrio", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	_, err = c.postReq("/api/v2/torrents/toggleFirstLastPiecePrio", &params)
 	return
 }
 
@@ -1066,11 +1046,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-force-start
 */
 func (c *Client) SetForceStart(hashes []string, enable bool) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("value", strconv.FormatBool(enable))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setForceStart", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("value", strconv.FormatBool(enable))
+	_, err = c.postReq("/api/v2/torrents/setForceStart", &params)
 	return
 }
 
@@ -1087,16 +1066,17 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#set-super-seeding
 */
 func (c *Client) SetSuperSeeding(hashes []string, enable bool) (err error) {
-	form := url.Values{}
-	form.Add("hashes", strings.Join(hashes, "|"))
-	form.Add("value", strconv.FormatBool(enable))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/setSuperSeeding", &formDataBytes)
+	params := url.Values{}
+	params.Add("hashes", strings.Join(hashes, "|"))
+	params.Add("value", strconv.FormatBool(enable))
+	_, err = c.postReq("/api/v2/torrents/setSuperSeeding", &params)
 	return
 }
 
 /*
 Requires knowing the torrent hash. You can get it from GetTorrentList
+
+It can move files too.
 
 # Params
   - "hash" The hash of the torrent
@@ -1111,12 +1091,11 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-file
 */
 func (c *Client) RenameFile(hash, oldPath, newPath string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("oldPath", oldPath)
-	form.Add("newPath", newPath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/renameFile", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("oldPath", oldPath)
+	params.Add("newPath", newPath)
+	_, err = c.postReq("/api/v2/torrents/renameFile", &params)
 	return
 }
 
@@ -1138,11 +1117,10 @@ Requires knowing the torrent hash. You can get it from GetTorrentList
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#rename-folder
 */
 func (c *Client) RenameFolder(hash, oldPath, newPath string) (err error) {
-	form := url.Values{}
-	form.Add("hash", hash)
-	form.Add("oldPath", oldPath)
-	form.Add("newPath", newPath)
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/torrents/renameFolder", &formDataBytes)
+	params := url.Values{}
+	params.Add("hash", hash)
+	params.Add("oldPath", oldPath)
+	params.Add("newPath", newPath)
+	_, err = c.postReq("/api/v2/torrents/renameFolder", &params)
 	return
 }

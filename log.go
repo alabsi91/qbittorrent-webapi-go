@@ -47,7 +47,7 @@ func (c *Client) GetLog(params *GetLogParams) (results []GetLogResponse, err err
 	queryParams.Add("info", strconv.FormatBool(*params.Info))
 	queryParams.Add("warning", strconv.FormatBool(*params.Warning))
 	queryParams.Add("critical", strconv.FormatBool(*params.Critical))
-	queryParams.Add("lastKnownId", strconv.Itoa(*params.LastKnownId))
+	queryParams.Add("last_known_id", strconv.Itoa(*params.LastKnownId))
 
 	body, err := c.getReq("/api/v2/log/main", &queryParams)
 	if err != nil {
@@ -74,7 +74,7 @@ https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-
 func (c *Client) GetPeerLog(lastKnownId int) (results []GetPeerLogResponse, err error) {
 
 	queryParams := url.Values{}
-	queryParams.Add("lastKnownId", strconv.Itoa(lastKnownId))
+	queryParams.Add("last_known_id", strconv.Itoa(lastKnownId))
 
 	body, err := c.getReq("/api/v2/log/peers", &queryParams)
 	if err != nil {

@@ -68,15 +68,15 @@ func (c *Client) getReq(endpoint string, params *url.Values) (body []byte, err e
 	return body, nil
 }
 
-func (c *Client) postReq(endpoint string, data *[]byte) (body []byte, err error) {
+func (c *Client) postReq(endpoint string, form *url.Values) (body []byte, err error) {
 	fullUrl, err := url.JoinPath(c.ServerURL, endpoint)
 	if err != nil {
 		return
 	}
 
 	var payload io.Reader = nil
-	if data != nil {
-		payload = bytes.NewReader(*data)
+	if form != nil {
+		payload = bytes.NewReader([]byte(form.Encode()))
 	}
 
 	req, err := http.NewRequest("POST", fullUrl, payload)

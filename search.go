@@ -23,13 +23,12 @@ import (
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#start-search
 */
 func (c *Client) StartSearch(pattern string, plugins []string, category []string) (results int, err error) {
-	form := url.Values{}
-	form.Add("pattern", pattern)
-	form.Add("plugins", strings.Join(plugins, "|"))
-	form.Add("category", strings.Join(category, ","))
+	params := url.Values{}
+	params.Add("pattern", pattern)
+	params.Add("plugins", strings.Join(plugins, "|"))
+	params.Add("category", strings.Join(category, ","))
 
-	formDataBytes := []byte(form.Encode())
-	body, err := c.postReq("/api/v2/search/start", &formDataBytes)
+	body, err := c.postReq("/api/v2/search/start", &params)
 	if err != nil {
 		return
 	}
@@ -56,10 +55,9 @@ func (c *Client) StartSearch(pattern string, plugins []string, category []string
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#stop-search
 */
 func (c *Client) StopSearch(id int) (err error) {
-	form := url.Values{}
-	form.Add("id", strconv.Itoa(id))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/search/stop", &formDataBytes)
+	params := url.Values{}
+	params.Add("id", strconv.Itoa(id))
+	_, err = c.postReq("/api/v2/search/stop", &params)
 	return
 }
 
@@ -74,12 +72,12 @@ func (c *Client) StopSearch(id int) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-status
 */
 func (c *Client) GetSearchStatus(id *int) (results []SearchStatusResponse, err error) {
-	form := url.Values{}
+	params := url.Values{}
 	if id != nil {
-		form.Add("id", strconv.Itoa(*id))
+		params.Add("id", strconv.Itoa(*id))
 	}
 
-	body, err := c.getReq("/api/v2/search/status", &form)
+	body, err := c.getReq("/api/v2/search/status", &params)
 	if err != nil {
 		return
 	}
@@ -102,16 +100,16 @@ func (c *Client) GetSearchStatus(id *int) (results []SearchStatusResponse, err e
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#get-search-results
 */
 func (c *Client) GetSearchResults(id int, limit, offset *int) (results SearchResultsResponse, err error) {
-	form := url.Values{}
-	form.Add("id", strconv.Itoa(id))
+	params := url.Values{}
+	params.Add("id", strconv.Itoa(id))
 	if limit != nil {
-		form.Add("limit", strconv.Itoa(*limit))
+		params.Add("limit", strconv.Itoa(*limit))
 	}
 	if offset != nil {
-		form.Add("offset", strconv.Itoa(*offset))
+		params.Add("offset", strconv.Itoa(*offset))
 	}
 
-	body, err := c.getReq("/api/v2/search/results", &form)
+	body, err := c.getReq("/api/v2/search/results", &params)
 	if err != nil {
 		return
 	}
@@ -131,10 +129,9 @@ func (c *Client) GetSearchResults(id int, limit, offset *int) (results SearchRes
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#delete-search
 */
 func (c *Client) DeleteSearch(id int) (err error) {
-	form := url.Values{}
-	form.Add("id", strconv.Itoa(id))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/search/delete", &formDataBytes)
+	params := url.Values{}
+	params.Add("id", strconv.Itoa(id))
+	_, err = c.postReq("/api/v2/search/delete", &params)
 	return
 }
 
@@ -164,10 +161,9 @@ func (c *Client) GetSearchPlugins() (results []SearchPluginsResponse, err error)
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#install-search-plugin
 */
 func (c *Client) InstallSearchPlugin(sources []string) (err error) {
-	form := url.Values{}
-	form.Add("sources", strings.Join(sources, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/search/installPlugin", &formDataBytes)
+	params := url.Values{}
+	params.Add("sources", strings.Join(sources, "|"))
+	_, err = c.postReq("/api/v2/search/installPlugin", &params)
 	return
 }
 
@@ -181,10 +177,9 @@ func (c *Client) InstallSearchPlugin(sources []string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#uninstall-search-plugin
 */
 func (c *Client) UninstallSearchPlugin(names []string) (err error) {
-	form := url.Values{}
-	form.Add("names", strings.Join(names, "|"))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/search/uninstallPlugin", &formDataBytes)
+	params := url.Values{}
+	params.Add("names", strings.Join(names, "|"))
+	_, err = c.postReq("/api/v2/search/uninstallPlugin", &params)
 	return
 }
 
@@ -199,11 +194,10 @@ func (c *Client) UninstallSearchPlugin(names []string) (err error) {
 https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)#enable-search-plugin
 */
 func (c *Client) EnableSearchPlugin(names []string, enable bool) (err error) {
-	form := url.Values{}
-	form.Add("names", strings.Join(names, "|"))
-	form.Add("enable", strconv.FormatBool(enable))
-	formDataBytes := []byte(form.Encode())
-	_, err = c.postReq("/api/v2/search/enablePlugin", &formDataBytes)
+	params := url.Values{}
+	params.Add("names", strings.Join(names, "|"))
+	params.Add("enable", strconv.FormatBool(enable))
+	_, err = c.postReq("/api/v2/search/enablePlugin", &params)
 	return
 }
 
