@@ -27,7 +27,7 @@ func (c *Client) GetTorrentList(opts *GetTorrentListOptions) (results []TorrentL
 
 	queryParams := url.Values{}
 	if opts.Filter != "" {
-		queryParams.Add("filter", opts.Filter)
+		queryParams.Add("filter", string(opts.Filter))
 	}
 	if opts.Category != nil {
 		queryParams.Add("category", *opts.Category)

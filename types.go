@@ -1,6 +1,6 @@
 package qbittorrent
 
-type Filters = string
+type Filters string
 
 const (
 	FilterAll                Filters = "all"
@@ -17,7 +17,7 @@ const (
 	FilterErrored            Filters = "errored"
 )
 
-type TorrentState = string
+type TorrentState string
 
 const (
 	TorrentStateError              TorrentState = "error"              // Some error occurred, applies to paused torrents
@@ -170,7 +170,7 @@ const (
 	FilePriorityMaximal       FilePriority = 7 // Maximal priority
 )
 
-type SearchStatus = string
+type SearchStatus string
 
 const (
 	SearchStatusRunning SearchStatus = "Running"
