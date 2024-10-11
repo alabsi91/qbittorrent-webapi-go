@@ -55,6 +55,9 @@ func (c *Client) Login(username, password string) (err error) {
 
 	c.http = &http.Client{Jar: c.Jar}
 
+	c.username = username
+	c.password = password
+
 	return
 }
 
@@ -66,6 +69,9 @@ func (c *Client) Logout() (err error) {
 	if err != nil {
 		return
 	}
+
+	c.username = ""
+	c.password = ""
 
 	return
 }

@@ -18,6 +18,8 @@ type Client struct {
 	ServerURL string
 	http      *http.Client
 	Jar       http.CookieJar
+	username  string
+	password  string
 }
 
 func NewClient(serverURL string) *Client {
@@ -61,6 +63,16 @@ func (c *Client) getReq(endpoint string, params *url.Values) (body []byte, err e
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		// try to login again
+		if c.username != "" && c.password != "" && resp.StatusCode == http.StatusForbidden {
+			err = c.Login(c.username, c.password)
+			if err != nil {
+				return
+			}
+
+			return c.getReq(endpoint, params)
+		}
+
 		err = fmt.Errorf("%d: %s", resp.StatusCode, string(body))
 		return
 	}
@@ -99,6 +111,16 @@ func (c *Client) postReq(endpoint string, form *url.Values) (body []byte, err er
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		// try to login again
+		if c.username != "" && c.password != "" && resp.StatusCode == http.StatusForbidden {
+			err = c.Login(c.username, c.password)
+			if err != nil {
+				return
+			}
+
+			return c.postReq(endpoint, form)
+		}
+
 		err = fmt.Errorf("%d: %s", resp.StatusCode, string(body))
 		return
 	}
@@ -132,6 +154,16 @@ func (c *Client) postMultipart(endpoint string, buffer bytes.Buffer, contentType
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		// try to login again
+		if c.username != "" && c.password != "" && resp.StatusCode == http.StatusForbidden {
+			err = c.Login(c.username, c.password)
+			if err != nil {
+				return
+			}
+
+			return c.postMultipart(endpoint, buffer, contentType)
+		}
+
 		err = fmt.Errorf("%d: %s", resp.StatusCode, string(body))
 		return
 	}
